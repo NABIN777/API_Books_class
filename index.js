@@ -2,13 +2,13 @@ require('dotenv').config()
 const portRoute = process.env.PORT
 
 //Importing routes.
-const books_routes = require('./routes/books-rout')
+const books_routes = require('./routes/book-routes')
 
 
 const mongoose = require("mongoose")
 
 mongoose.connect('mongodb://127.0.0.1:27017/demo')   // mongodb://localhost:27017/demo will not work.
-        .then(() => console.log("Connected to mongodb."))
+        .then(() => console.log("Connected to MongoDB."))
         .catch((err) => console.log(err))
 
 
@@ -41,11 +41,10 @@ app.use((err, req, res, next) => {
 //Should be at last.
 app.use((req, res) => {
         res.status(404).json({error : "Path Not Found"})
-})
+});
 
 
 //It can be anywhere, but by convention keep it ay last.
 app.listen(portRoute, () =>{
-        console.log(`server is running in ${portRoute}`)   //  Formatted string: `` not ''
-     })
-    
+        console.log(`Server is running in ${portRoute}.`)   //  Formatted string: `` not ''
+     });
