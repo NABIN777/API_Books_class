@@ -1,15 +1,17 @@
-const jwt=require()
-const verifyUser = (req, res, next) => {
-    const token = req.header('x-auth-token');
-    if (!token)return res.status(401).json({error:'auth token not'})
-    token=token.split('')[1]
-    jwt.verify(token,process.env.SECRET,(err,payload)=>{
-        if(err) return res.status(401).json({error:'auth token not'})
-        req.user = payload;
-        next()
-    })
-    // console.log
-    next()
+const jwt = require('jsonwebtoken')
 
-console.log("inside the middleware")}
-module.exports = {verifyUser}
+const verifyUser = (req, res, next) => {
+    let token = req.headers.authorization
+    if (!token) return res.status(401).json({ error: 'auth token not present' })
+    token = token.split(' ')[1]
+
+    jwt.verify(token, process.env.SECRET, (err, payload) => {
+        if (err) return res.status(401).json({ error: err.message })
+        req.user = payload
+        console.log(req.user)
+    })
+    next()
+    
+}
+
+module.exports = { verifyUser }
