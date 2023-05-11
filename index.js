@@ -11,6 +11,7 @@ const broute = require('./routes/book-routes')
 const uroute = require('./routes/user-routes')
 
 const { verifyUser } = require('./middlewares/auth');
+const upload=require('./middlewares/upload')
 
 
 
@@ -71,6 +72,9 @@ app.use('/books', broute)
 app.use(verifyUser)
 
 app.use('/users', uroute)
+app.post('/upload',upload.single('photo'),(req,res,next)=>{
+    res.json(req.file)
+})
 
 
 
