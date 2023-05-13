@@ -1,18 +1,15 @@
+// '[]' is array
 const books = [
     {
-        id: 1,
-        title: "Harry Potter and the Chamber of Secrets",
-        author: "J.K. Rowling"
-    },
+        id : 1,
+        title : 'JS Fundamentals',
+        author : 'Kiran Rana'
+    } ,
     {
-        id: 2,
-        title: "Harry Potter and the Prisoner of Azkaban",
-        author: "J.K. Rowling"
-    },
-    {
-        id: 3,
-        title: "Harry Potter and the Goblet of Fire",
-        author: "J.K. Rowling"
-    }
-];
-module.exports = books
+        id : 2,
+        title : 'One Piece',
+        author : 'Eichiro Oda'
+    } 
+]
+
+module.exports = books;

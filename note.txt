@@ -1,0 +1,65 @@
+HTTP request types
+GET - to get data from a sercer
+POST - to send data to a server
+PUT - to send data to a server to modify data
+DELETE - to delete data
+PATCH - like put/post but its primary purpose is to apply partial modifications to the resource. 
+
+url data, size data not suitable for put but post is
+
+Dev enviroment packages should use --save-dev during install
+
+"start": "node index.js",
+"dev": "nodemon index.js" are added manually
+
+can use code node_modules/.bin/index.js
+
+custom scripts should run "npm run dev"
+
+//////////////////////////////////////////////////////////////////////////
+
+start a project 
+npm init -y
+
+install mongoose 
+npm i mongoose
+
+npm install express
+npm install --save-dev nodemon
+
+RESTful APIs
+
+Routing - 
+
+Status codes
+201 - successfull post operation status code
+400 - bad request status code
+
+///////////////////////////////////////////////////////
+
+NoSQL
+(MongoDB <= 16MB)
+
+1) one to (few below>)
+2) one to many (>= 10000)
+3) one to million (>= 1000000)
+
+Embedding - Embedded documents are an efficient and clean way to store related data, especially data that's regularly accessed together.
+
+///////////////
+ 
+Authentication 
+
+npm install jsonwebtoken
+
+
+db.users.find()
+db.users.updateOne({username : 'testadmin'}, {$set: {role:'admin'}})
+
+
+/////////////////
+
+dedicated image handelling url in api
+
+npm install multer // for handling multipart/form-data
+npm install uuid // to give id to files

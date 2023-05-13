@@ -1,206 +1,81 @@
-const express = require('express')
+const express = require('express');
+// const books = require('../data/books');
+const bookController = require('../controllers/book_controller')
+const reviewController = require('../controllers/review_controller')
+const { verifyAdmin } = require('../middlewares/auth')
+
 const router = express.Router()
 
-//Importing model.
-const NewBook = require('../models/NewBook')
-
-
-
-
+// This makes codes organized rather then writing everthing in one file
 router.route('/')
+    .get(
+        bookController.getAllbooks
+    )
+    .post(
+        verifyAdmin,
+        bookController.createbook
+    )
 
-    //next is used for error handling.
-    //next is defined in index.js i.e. a middleware.
-
-    .get((req, res, next) => {
-        NewBook.find()
-            .then(books => res.json(books))
-            .catch(next)
+    .put((req, res) => {
+        res.status(405).json({ error:"This method (PUT) is not allowed" })
     })
 
-    .post((req, res, next) => {
-        NewBook.create(req.body)
-            .then((book) => res.status(201).json(book))
-            .catch(next)
-    })
-
-    .put((req, res, next) => {
-        res.status(405).json({ error: "PUT request is not allowed" })
-    })
-
-    .delete((req, res, next) => {
-        NewBook.deleteMany()
-            .then(reply => res.json(reply))
-            .catch(next)
-    })
-
-
-
-// ####################################################################################################################################
-// Different URI. 
-
+    .delete(
+        bookController.deleteAllbooks
+    )
+    
 router.route('/:book_id')
-
-    .get((req, res, next) => {
-        NewBook.findById(req.params.book_id)
-            .then((book) => {
-
-                //Custom error
-                if (!book) {
-                    res.status(404).json({ error: 'Book bot found' })
-                }
-
-                res.json(book)
-            })
-            .catch(next)
-    })
-
+    .get(
+        bookController.getAbook
+    )
 
     .post((req, res) => {
-        res.status(405).json({ error: "POST request is not allowed" })
+        res.status(405).json({error: 'This method (POST) is not allowed'})
     })
 
-    .put((req, res, next) => {
+    .put(
+        bookController.updateAbook
+    )
 
-        NewBook.findByIdAndUpdate(
-            req.params.book_id,
-            { set: req.body },
-            { new: true }
-        )
-            .then((updated) => res.json(updated))
-            .catch(next)
-    })
-
-    .delete((req, res, next) => {
-
-        NewBook.findByIdAndDelete(req.params.book_id)
-            .then((reply) => res.json(reply)) //res.status(204).end()
-            .catch(next)
-    })
-
-
-
+    .delete(
+        bookController.deleteAbook
+    );
 
 router.route('/:book_id/reviews')
 
-    .get((req, res, next) => {
-        NewBook.findById(req.params.book_id)
-            .then((book) => {
-                if (!book) return res.status(404).json({ error: "Book not found." })
-                res.json(book.reviews)
-            })
-            .catch(next)
-    })
+    .get(
+        reviewController.getAllReviews
+    )
 
-    .post((req, res, next) => {
-
-        NewBook.findById(req.params.book_id)
-            .then((book => {
-                if (!book) return res.status(404).json({ error: "Book not found." })
-                const review = {
-                    text: req.body.text
-                }
-                book.reviews.push(review)
-                book.save()
-                    .then((book) => res.status(201).json(book.reviews[book.reviews.length - 1]))
-                    .catch(next)
-            })
-            )
-            .catch(next)
-    })
-
+    .post(
+        reviewController.createReview
+    )
 
     .put((req, res, next) => {
-        res.status(405).json({ error: "PUT request is not allowed" })
+        res.status(405).json({error: 'This method (PUT) is not allowed'})
+        .catch(next)
     })
 
-
-    .delete((req, res, next) => {
-
-        NewBook.findById(req.params.book_id)
-            .then((book) => {
-                if (!book) return res.status(404).json({ error: "Book not found." })
-                book.reviews = []
-                book.save()
-                    .then((book) => res.status(204).end())
-                    .catch(next)
-            })
-            .catch(next)
-    })
-
-
-
-
-
+    .delete(
+        reviewController.deleteReviews
+    )
+      
 router.route('/:book_id/reviews/:review_id')
 
-    .get((req, res, next) => {
-        NewBook.findById(req.params.book_id)
-            .then((book) => {
-                if (!book) return res.status(404).json({ error: "Book not found." })
+    .get(
+        reviewController.createReview
+    )
 
-                const review = book.reviews.id(req.params.review_id)
-
-                if (!review) return res.status(404).json({ error: "Review not found." })
-                res.json(review)
-            })
-            .catch(next)
-    })
-
+    .put(
+        reviewController.deleteAreview    
+    )
 
     .post((req, res, next) => {
-        res.status(405).json({ error: "POST request is not allowed" })
+        res.status(405).json({error: 'This method (POST) is not allowed'})
     })
 
-
-
-    .put((req, res, next) => {
-
-        NewBook.findById(req.params.book_id)
-            .then(book => {
-                if (!book) return res.status(404).json({ error: "Book not found." })
-                book.reviews = book.reviews.map((r) => {
-                    if (r._id == req.params.review_id) { // _id is of Object type and review_id is of String type, So, === can't be used.
-                        r.text = req.body.text
-                    }
-                    return r
-                })
-                book.save()
-                    .then(book => {
-                        res.json(book.reviews.id(req.params.review_id))
-                    })
-                    .catch(next)
-            })
-            .catch(next)
-    })
-
-
-    // "book.save()" is used and not "review.save()" because book(NewBook) is the model and review is an embedded document.
-
-    
-    .delete((req, res, next) => {
-
-        NewBook.findById(req.params.book_id)
-            .then(book => {
-                if (!book) return res.status(404).json({ error: "Book not found." })
-                book.reviews = book.reviews.filter((r) => {
-                    return r._id != req.params.review_id
-                })
-                book.save()
-                    .then(book => res.status(204).end())
-                    .catch(next)
-            })
-            .catch(next)
-    })
-
-
-
-
-
-
-
-
-
-
+    .delete(
+        reviewController.deleteAreview
+    )
 
 module.exports = router
