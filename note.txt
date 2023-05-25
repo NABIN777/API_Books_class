@@ -63,3 +63,8 @@ dedicated image handelling url in api
 
 npm install multer // for handling multipart/form-data
 npm install uuid // to give id to files
+
+//////////////making react project////
+first make dir for a project then
+npx create-next-app@latest ./ (./ means make in current directory)
+ans yes or know according to ur demand
