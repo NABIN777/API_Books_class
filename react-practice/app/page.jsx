@@ -1,46 +1,96 @@
-import '@/components/Counter'
-import { count } from 'console'
-'use server'
-const Hello=(props)=>{
-  console.log(props)
-  const {name,age}=props
- 
-  return(
-  <>
-   {/* <p1>Hello {props.name},you're {props.age}years old.</p1> */}
-   <p1>Hello {name},you're {age}years old.</p1>
+'use client'
 
-</>
-  )
-}
-
-
+import Notes from "@/components/Notes"
 
 export default function Home() {
-  const now = new Date();
-  const friends=[
-    {name:'Nabin',age:20},
-    {name:'Vishwamitra',age:250000},
-    {name:'Saurav',age:25}
 
-  ]
-  // const name='Nirajan'
- return (
-< div>
-  <h1>  Welocme to React</h1>
-  <p> It is {now.toString()}.</p>
-
-  {/* <Hello name={friends} age={20}/> */}
-
-
-  {
-  friends.map(friends =>
-  <Hello name={friends.name} age={friends.age}/>
+  
+  return (
+    <div>
+      <Notes notes={notes} />
+    </div>
   )
 }
-{count}
-  {/* <Hello/> */}
-  </div>
 
-  )
-}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// const Hello = (props) => {
+//   console.log(props);
+//   // const {name, age} = props;
+//   return (
+//     <>
+//       <p>Hello {props.name}, you're {props.age} years old </p>
+//     </>
+//     )
+// }
+
+
+    // <>
+
+    // <h1>Welcome to React</h1>
+    // <p>It is {now.toString()}.</p>
+    // {/* <Hello name={name} age={47}/> */}
+    // {friends.map((friend, index) => (
+    //           <Hello key={index} name={friend.name} age={friend.age} />
+    // ))}
+    
+    // <Counter count={count} handleClick={handleClick}/>
+    // <Counter count={count} handleClick={handleClick}/> 
+
+    // <p> . </p>
+    // <p> . </p>
+    
+    // {/* <h1> Hello World, React! </h1> */}
+    // {/* <p> Current time is {now.toString()}. </p> */}
+
+
+    // {/* <Task1/> */}
+
+
+    // {/* <Task2/> */}
+
+
+    // <Feedback/>
+
+
+    // </>
+    
+    
+
+
+  

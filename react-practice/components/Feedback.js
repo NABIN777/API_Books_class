@@ -1,39 +1,79 @@
+'use client'
 import { useState } from "react";
 
-const Feedback = () => {
-  const [feedback, setFeedback] = useState({ good: 0, neutral: 0, bad: 0 });
+const Statistics = (props) => {
+    console.log(props);
+    const {Good, Neutral, Bad, History} = props
 
-  const handleGood = () => {
-    setFeedback({ ...feedback, good: feedback.good + 1 });
-  };
+    
+    const Total = Good + Neutral + Bad;
+    const Average = (Good + Neutral)/ Total;
 
-  const handleNeutral = () => {
-    setFeedback({ ...feedback, neutral: feedback.neutral + 1 });
-  };
+    return (
+        <>
+            <h2>Statistics</h2>
+            <p>Good: {Good}</p>
+            <p>Neutral: {Neutral}</p>
+            <p>Bad: {Bad}</p>
+            <p>All: {Total}</p>
+            <p>Average: {Average}</p>  
+            <p>{History}</p>    
+        </>
+    )
+}
 
-  const handleBad = () => {
-    setFeedback({ ...feedback, bad: feedback.bad + 1 });
-  };
+const Buttons = (props) => {
+    return (
+        <>
+            <button onClick={props.handleClick}>{props.text}</button>
+        </>
+    )
+}
 
-  const { good, neutral, bad } = feedback;
-  const total = good + neutral + bad;
-  const average = total > 0 ? (good - bad) / total : 0;
 
-  return (
-    <>
-      <h1>Please Rate Us</h1>
-      <button onClick={handleGood}>good</button>
-      <button onClick={handleNeutral}>neutral</button>
-      <button onClick={handleBad}>bad</button>
 
-      <h2>Statistics</h2>
-      <p>good: {good}</p>
-      <p>neutral: {neutral}</p>
-      <p>bad: {bad}</p>
-      <p>all: {total}</p>
-      <p>average: {average}</p>
-    </>
-  );
-};
+export default function Feedback() {
+    // const [Good, setGood] = useState(0)
+    // const [Neutral, setNeutral] = useState(0)
+    // const [Bad, setBad] = useState(0)
 
-export default Feedback;
+    const [Feedback, setFeedback] = useState(
+        {Good: 0, Neutral : 0, Bad : 0}
+    )
+
+    const [History, setHistory] = useState([])
+
+    // const handleGood = () => setGood(Good + 1)
+    // const handleNeutral = () => setNeutral(Neutral + 1)
+    // const handleBad = () => setBad(Bad + 1)
+
+    // const handleGood = () => setFeedback(Feedback.Good + 1, Neutral, Feedback.Neutral, Feedback.Bad)
+    // const handleNeutral = () => setFeedback(Feedback.Good, Feedback.Neutral + 1, Feedback.Bad)
+    // const handleBad = () => setFeedback(Feedback.Good, Feedback.Neutral, Feedback.Bad + 1)
+
+    // Always use functional operations(functions that create new copy and updates it eg. concat) {key message}
+    const handleGood = () => {
+        setFeedback({...Feedback, Good: Feedback.Good + 1})
+        setHistory(History.concat('G'))
+    }
+    const handleNeutral = () => setFeedback({...Feedback, Neutral: Feedback.Neutral + 1})
+    const handleBad = () => setFeedback({...Feedback, Bad: Feedback.Bad + 1})
+
+    return (
+        <>
+            <h2>Give Feedback</h2>
+
+            <Buttons handleClick={handleGood} text="Good"/>
+            <Buttons handleClick={handleNeutral} text="Neutral"/>
+            <Buttons handleClick={handleBad} text="Bad"/>
+            
+            <Statistics
+                Good={Feedback.Good}
+                Neutral={Feedback.Neutral}
+                Bad={Feedback.Bad}
+                History={History}
+            />
+            
+        </>
+    )
+}
